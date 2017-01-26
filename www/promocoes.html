@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+	<link rel="shortcut icon" type="image/x-icon" href="icon.jpg">
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css"> 
+	<script src="js/jquery.min.js"></script> 
+	<script src="js/jquery.mobile-1.4.5.min.js"></script>
+	<script src="phonegap.js"></script>
+    <title>Delivery</title>
+
+</head>
+<body>
+
+<div data-role="page" id="page">
+
+		<div data-role="header" data-position="fixed" id="vermelho">
+			<h1 id="infor">Home</h1>
+			<a href="#outside" data-icon="bars">Menu</a>
+		</div><!-- /header -->
+
+		<div role="main" class="ui-content">
+		    <div id="conteudo">
+			</div>
+		</div><!-- /content -->
+
+		<div data-role="footer">
+			<h4>sobral pizza  </h4>
+		</div><!-- /footer -->
+        <div data-role="panel" id="outside">
+            <ul data-role="listview" class="vermelho">
+                <li data-icon="back"><a href="#" data-rel="close">Fechar</a></li>
+                <li><a href="#" id="clicar">Cardápio</a></li>
+                <li><a href="#" id="sobre">Contato</a></li>
+                <li><a href="#" class="sair">Sair</a></li>
+            </ul>
+        </div> 
+	</div><!-- /page -->
+	
+	<script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+</body>
+</html>
+<script>
+$(document).ready(function(){
+var info = "";
+$.ajax({
+		type: 'POST',
+		url: "http://transcreva.net/teste/promocoes.php",
+		data: 'uid='+$('#uid').val(),
+		crossDomain: true,
+		dataType: 'HTML',
+		error: function (request, status, erro) {
+            alert("Problema ocorrido: " + status + "\nDescrição: " + erro);
+            //Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
+            alert("Informações da requisição: \n" + request.getAllResponseHeaders());
+        },
+		success: function(data){
+		info = JSON.parse(data);
+		//alert(info);
+		var li = "";
+		    for(var key in info) {
+				//add the <li> to "li" variable
+				//note the use of += in the variable
+				//meaning I'm adding to the existing data. not replacing it.
+				//store index value in array as id of the <a> tag
+				li += '<div class="vermelho">'+
+				      '<img src="'+info[key]['img']+'" width="100%" height="100%"><br>'+
+				      '<span>'+info[key]['nome']+'</span><br>'+ 
+					  '<span>'+info[key]['desc']+'</span><br>'+
+                      '<span>de: '+info[key]['valor_prod']+'</span> <span>Por: '+info[key]['valor']+'</span>'+					  
+				      '</div><br>';
+			}
+			$('#conteudo').append(li);
+			//$('#infor').html("pedido N.: "+data);
+			//$('#inp-info').val(data);
+			
+		}
+  }); 
+   $('#clicar').click(function(){
+     window.location.href = "principal.html";
+   });
+   
+   $('#sobre').click(function(){
+     window.location.href = "info.html";
+   });
+   
+   $('.sair').click(function(){
+     navigator.app.exitApp();
+   });
+   
+});
+</script>

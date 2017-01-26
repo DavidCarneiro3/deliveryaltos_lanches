@@ -1,0 +1,759 @@
+﻿<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+	<link rel="shortcut icon" type="image/x-icon" href="imagens/ico.jpg">
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css"> 
+	<script src="js/jquery.min.js"></script> 
+	<script src="js/jquery.mobile-1.4.5.min.js"></script>
+	<script src="phonegap.js"></script>
+    <title>Delivery</title>
+<style>
+.total{
+	font-size: 15px;
+	font-style: bold;
+}
+
+.total2{
+	float:right;
+	font-size: 15px;
+	font-style: bold;
+}
+
+.info-base{
+	font-size:12;
+}
+
+</style>
+<script>
+function pega(){
+	var val = document.getElementById('opcao2').value;
+	alert(val);
+	$("#obs2").attr("placeholder", "Observação "+val+" Ex: Sem cebola, sem milho...");
+}
+function muda(){
+	var valor = document.getElementById('select-tam').value;
+	//alert(valor);
+	if(valor == 'Grande'){
+		//alert(valor);
+		$('#beb').show();
+	}else{
+		$('#beb').hide();
+	}
+}
+
+</script>
+</head>
+<body>
+
+<div data-role="page" id="info-page" data-theme="a" class="fundo">
+    
+		<div data-role="header" data-position="fixed" id="fundo">
+			<h1><img src="img/logo.png" width="100%" height="100%"></h1>
+			<a href="#outside" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext ui-btn-inline">Minus</a>
+		</div><!-- /header -->
+
+		<div role="main" class="ui-content">
+		<form id="first-page">
+		    <a href="#popupPadded" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline">Bairros Atendidos</a>
+			<div data-role="popup" id="popupPadded" class="ui-content">
+			  <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right"></a>
+			  <p>Vila Pery (Parcial)</p>
+			  <p>Mondubim (Parcial)</p>
+			  <p>Arvoredo (Parcial)</p>
+			  <p>Esplanada Novo Mondubim (Parcial)</p>
+			  <p>Maraponga (Parcial)</p>
+			</div>
+			<input type="hidden" name="categ" value="" id="categ">
+		    <input type="hidden" name="valped" value="" id="inp-info">
+			<ul data-role="listview" id="prof-list" data-inset="true">
+			  
+				
+            </ul>
+			</form>
+		</div><!-- /content -->
+        
+		<div data-role="footer" data-position="fixed">
+			<h4 class="controler">altos lanches  </h4>
+		</div><!-- /footer -->
+        <div data-role="panel" id="outside">
+            <ul data-role="listview">
+                <li data-icon="back"><a href="#" data-rel="close">Fechar</a></li>
+                <li><a href="#" id="prin">Categorias</a></li>
+				<li><a href="#" id="consultar">Consultar Pedido</a></li>
+                <li><a href="#" id="sobre">Contato</a></li>
+                <li><a href="#" class="sair">Sair</a></li>
+            </ul>
+        </div> 
+		<input type="hidden" name="uid" id="uid" value="2">
+	
+	</div><!-- /page -->
+
+	<div data-role="page" id="ped-page" data-theme="a">
+	  
+
+		<div data-role="header" data-position="fixed" id="fundo">
+			<h1><img src="img/logo.png" width="100%" height="100%"></h1>
+			<a href="#outside" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext ui-btn-inline">Minus</a>
+		</div><!-- /header -->
+
+		<div role="main" class="ui-content">
+		<form id="frm-ped">
+			<div data-role="content">
+			<input type="hidden" name="nome" value="" id="nome">
+			<input type="hidden" name="categ" value="" id="categ">
+			<input type="hidden" name="valor" value="" id="valor">
+			<input type="hidden" name="ip-val" value="" id="ip-val">
+			</div>
+			<div id="control"></div>
+			<div id="control2">
+			  <div class="esconder" id="esconde">
+			    <div class="ui-field-contain" id="borda">
+				    <label for="borda">Adicionar Borda(s)</label>
+					<select data-native-menu="false" name="borda" id="select-borda">
+					  <option value="">Borda(as)</option>
+					  <option value="Catupiry">Catupiry</option>
+					  <option value="Cheddar">Mussarela</option>
+					  
+					</select>
+					
+				</div>
+				<input type="hidden" name="id_prod" id="id-prod" value="">
+				<div class="ui-field-contain" id="metade">
+				    <label for="borda">Metade de Outro Sabor</label>
+					<select name="metade" id="select-metade">
+					  <option value="">Metade</option>
+					</select>
+				</div>
+				<div class="ui-field-contain" id="tam">
+				    <label for="borda">Tamanho</label>
+					<select data-native-menu="false" name="tamanho" id="select-tam" required>
+					  <option value="">Tamanho</option>
+					  <option value="Média">Média</option>
+					  <option value="Grande">Grande</option>
+					</select>
+					
+				</div>
+				</div>
+				<div id="esconde2" class="esconder">
+				  
+				<div>
+				    <div class="ui-field-contain" id="beb" style="display: none;">
+				    <label for="borda">Bebida</label>
+					<select data-native-menu="false" name="bebida" id="select-beb">
+					  <option value="">Bebida</option>
+					  <option value="Pepsi">Pepsi</option>
+					  <option value="Fanta">Fanta</option>
+					  <option value="Guaraná">Guaraná</option>
+					</select>
+				</div>
+					<input data-clear-btn="true" type="text" name="obs1" id="obs1" placeholder="Observação metade 1">
+					<input data-clear-btn="true" type="text" name="obs2" id="obs2" placeholder="Observação metade 2">
+				</div>
+				</div>
+			  
+				
+				<input type="hidden" name="tipo" id="tipo" value="">
+				<a href="#" class="ui-btn" id="add">Adicionar</a>
+				<a href="#" class="ui-btn" id="fechar">finalizar Pedido</a>
+			</div>
+			</form>
+		</div><!-- /content -->
+
+		<div data-role="footer" data-position="fixed">
+			<h4 class="controler">altos lanches  </h4>
+		</div><!-- /footer -->
+        <div data-role="panel" id="outside">
+            <ul data-role="listview">
+                <li data-icon="back"><a href="#" data-rel="close">Fechar</a></li>
+                <li><a href="principal.html">Cardápio</a></li>
+                <li><a href="#" id="sobre">Contato</a></li>
+                <li><a href="#" class="sair">Sair</a></li>
+				
+            </ul>
+        </div> 
+	  	
+	</div><!-- /page -->
+	
+	<div data-role="page" id="fim-ped-page" data-theme="a" data-position="fixed">
+       
+		<div data-role="header" data-position="fixed" id="fundo">
+			<h1><img src="img/logo.png" width="100%" height="100%"></h1>
+			<a href="#outside" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext ui-btn-inline">Minus</a>
+		</div><!-- /header -->
+
+		<div role="main" class="ui-content">
+		<form id="frm-fim-page">
+			<div data-role="content"></div>
+			<input type="hidden" name="ip" value="" id="ip">
+			<div id="control2">
+			<input type="hidden" name="valped2" value="" id="inp-info2">
+			    <ul data-role="listview" id="results" data-inset="true">
+				</ul>
+				<div><label class="total">Total</label></div>
+				<div class="ui-field-contain" id="forma-pag">
+				    <label for="pagamento">Forma de Pagamento</label>
+					<select data-native-menu="false" name="pagamento" id="select-pag">
+					  <option value="nenhum">Forma de Pagamento</option>
+					  <option value="Dinheiro">Dinheiro</option>
+					  <option value="Visa">Visa</option>
+					  <option value="Mastercard">Mastercard</option>
+					  <option value="Elo">Elo</option>
+					</select>
+				</div>
+			    
+				<input type="hidden" name="valtot" value="" id="inp-info3">
+				<input data-clear-btn="true" name="troco" id="txttroco" value="0.00" placeholder="Troco Para:">
+				<input data-clear-btn="true" name="nome" id="txtnome" value="" placeholder="Nome">
+				<input data-clear-btn="true" name="cep" id="cep" value="" placeholder="Cep">
+				<input data-clear-btn="true" name="numero" id="numero" value="" placeholder="Número">
+				<input data-clear-btn="true" name="rua" id="rua" value="" placeholder="Rua">
+				<input data-clear-btn="true" name="bairro" id="bairro" value="" placeholder="Bairro">
+				<input data-clear-btn="true" name="tel" id="txtfone" value="" placeholder="Telefone">
+				<input data-clear-btn="true" name="email" id="txtfone" value="" placeholder="email">
+				<input data-clear-btn="true" name="obs" id="txtobs" value="" placeholder="Observação">
+				<div id="res" style="font-size: 18px;"></div>
+				<a href="#" class="ui-btn" id="fechar2">Finalizar Pedido</a>
+				<a href="#" class="ui-btn" id="cancelar">Cancelar</a>
+			</div>
+			</form>
+		</div><!-- /content -->
+
+		<div data-role="footer" data-position="fixed">
+			<h4 class="controler">altos lanches </h4>
+		</div><!-- /footer -->
+        <div data-role="panel" id="outside">
+            <ul data-role="listview">
+                <li data-icon="back"><a href="#" data-rel="close">Fechar</a></li>
+                <li><a href="principal.html">Cardápio</a></li>
+                <li><a href="#" id="sobre">Contato</a></li>
+                <li><a href="#" class="sair">Sair</a></li>
+
+				
+            </ul>
+        </div> 
+	  	
+	</div><!-- /page -->
+	
+	<div data-role="page" id="info-ped"  data-position="fixed">
+    
+		<div data-role="header" data-position="fixed" id="fundo">
+			<h1><img src="img/logo.png" width="100%" height="100%"></h1>
+			<a href="#outside" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext ui-btn-inline">Minus</a>
+		</div><!-- /header -->
+
+		<div role="main" class="ui-content">
+		<form id="info-ped">
+		    <input type="hidden" name="valped" value="" id="inp-info">
+			<div id="result"></div>
+			<input type="text" name="id" id="nid" placeholder="Informe o número do pedido.">
+			<a href="#" class="ui-btn" id="cons">Consultar</a>
+		</form>	
+		</div><!-- /content -->
+
+		<div data-role="footer" data-position="fixed">
+			<h4 class="controler">altos lanches  </h4>
+		</div><!-- /footer -->
+        <div data-role="panel" id="outside">
+            <ul data-role="listview">
+                <li data-icon="back"><a href="#" data-rel="close">Fechar</a></li>
+                <li><a href="principal.html">Cardápio</a></li>
+                <li><a href="#" id="sobre">Contato</a></li>
+                <li><a href="#" class="sair">Sair</a></li>
+            </ul>
+        </div> 
+		<input type="hidden" name="uid" id="uid" value="2">
+	
+	</div><!-- /page -->
+	
+	<script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+</body>
+</html>
+<script>
+var datas = "";
+var valor = "";
+
+
+$('#add').click(function(){
+  //alert('entrou');
+  var formula = $('#frm-ped').serialize();
+
+/*	$.ajax({
+		type: 'POST',
+		url: "http://localhost/webservice/adicionar_pedidos.php",
+		data: formula,
+		error: function (request, status, erro) {
+            alert("Problema ocorrido: " + status + "\nDescição: " + erro);
+            //Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
+            alert("Informações da requisição: \n" + request.getAllResponseHeaders());
+        },
+		success: function(data){
+		alert(data);
+			if(data == 0){
+				alert('Erro ao adicionar pedido');
+			}
+			if(data == ""){
+				alert('Erroao adicionar pedido!');
+			}
+			if(data == 1){
+				alert('Adicionado com sucesso!');
+			}
+		}
+	});*/
+	$.get("http://ipinfo.io", function(response) {
+				    var ip = "", nome = $('#nome').val(), cat = $('#categ').val(), borda = $('#select-borda').val(), metade = $('#select-metade').val(), tam = $('#select-tam').val(), beb = $('#select-beb').val(), obs1 = $('#obs1').val(), obs2 = $('#obs2').val();
+					ip = response.ip;
+					$("#ip-val").val(ip);
+					//alert(beb);
+					$.post('http://altoslanches.com.br/webservice/adicionar_pedidos.php',{ip: ip, nome: nome, cat: cat, borda: borda, metade: metade, tam: tam, beb: beb, obs1: obs1, obs2: obs2}, function(resposta){
+				     //alert(resposta); 
+					 if(resposta == ""){
+						 alert("Não foi possível inserir produto!");
+					 }
+					 if(resposta == 0){
+						 alert("Não foi possível inserir produto!");
+					 }
+					 if(resposta == 1){
+						 alert("Produto adicionado ao carrinho!");
+					 }
+				  });
+			  }, "jsonp");
+});
+
+$('#fechar').click(function(){
+  //alert('entrou');
+  $('#ip').val($('#ip-val').val());
+  $.mobile.changePage("#fim-ped-page");
+});
+$('#fechar3').click(function(){
+  alert('entrou');
+  $('#inp-info2').val($('#inp-info1').val());
+  $.mobile.changePage("#fim-ped-page");
+});
+$(document).on("pagebeforeshow", "#fim-ped-page", function () {
+     var valor = $('#ip').val($('#ip-val').val());
+	 var result = "";
+     $.ajax({
+		type: 'POST',
+		url: "http://altoslanches.com.br/webservice/finaliza_pedido.php",
+		data: valor,
+		crossDomain: true,
+		dataType: 'JSON',
+		error: function (request, status, erro) {
+            alert("Problema ocorrido: " + status + "\nDescição: " + erro);
+            //Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
+            alert("Informações da requisição: \n" + request.getAllResponseHeaders());
+        },
+		success: function(data){
+			result = data;
+			var li = '<li data-role="list-divider"> itens <li>';
+			var valor = 0;
+			
+			$.each(result, function(i, value){
+			 var metade = "";
+			 var tipo = parseInt(value.tipo);
+			 //alert(value.tipo);
+			 li += '<li>' + 
+			       '<h2>'+value.nome + 
+				   '<p>Valor: R$'+value.valor+'</p>'+
+				   '</li>';
+			  valor = value.total;
+			  //valor += parseFloat(value.valor);
+			});
+			//alert(value.total);
+			$('#results').html(li);
+			$('.total').html("Total: R$"+valor);
+			//$('#inp-info3').val(showAsFloat(valor,2));
+			$(this).listview("refresh");
+		}
+	});
+  });
+$('#fechar2').click(function(){
+  var formula = $('#frm-fim-page').serialize();
+
+	$.ajax({
+		type: 'POST',
+		url: "http://altoslanches.com.br/webservice/fechar_pedido.php",
+		data: formula,
+		crossDomain: true,
+		error: function (request, status, erro) {
+            alert("Problema ocorrido: " + status + "\nDescição: " + erro);
+            //Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
+            alert("Informações da requisição: \n" + request.getAllResponseHeaders());
+        },
+		success: function(data){
+		    alert(data);
+			if(data == 0){
+				alert('Erro ao adicionar pedido');
+			}
+			if(data != ""){
+				alert('Pedido '+data+' adicionado com sucesso! Em breve seu pedido será enviado, para mais informações entre em contato conosco nos fones: (85) 3296-3343 / (85)9.8812-4002. Você também pode acompanhar pelo menu consultar pedido informe o código '+data+' para ver o status de seu pedido. Obrigado pela preferência.');
+				window.location.href = "index.html";
+			}
+			
+		}
+	});
+});
+
+$('#cancelar').click(function(){
+  //alert('entrou');
+  var formula = $('#frm-ped').serialize();
+
+/*	$.ajax({
+		type: 'POST',
+		url: "http://localhost/webservice/adicionar_pedidos.php",
+		data: formula,
+		error: function (request, status, erro) {
+            alert("Problema ocorrido: " + status + "\nDescição: " + erro);
+            //Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
+            alert("Informações da requisição: \n" + request.getAllResponseHeaders());
+        },
+		success: function(data){
+		alert(data);
+			if(data == 0){
+				alert('Erro ao adicionar pedido');
+			}
+			if(data == ""){
+				alert('Erroao adicionar pedido!');
+			}
+			if(data == 1){
+				alert('Adicionado com sucesso!');
+			}
+		}
+	});*/
+	$.get("http://ipinfo.io", function(response) {
+				    var ip = "";
+					ip = response.ip;
+					$("#ip-val").val(ip);
+					$.post('http://altoslanches.com.br/webservice/cancelar_pedidos.php',{ip: ip}, function(resposta){
+				     //alert(resposta); 
+					 if(resposta == ""){
+						 alert("Não foi possível cancelar pedido!");
+					 }
+					 if(resposta == 0){
+						 alert("Não foi possível cancelar pedido!");
+					 }
+					 if(resposta == 1){
+						 alert("Pedido Cancelado!");
+						 window.location.href = "principal.html";
+					 }
+				  });
+			  }, "jsonp");
+});
+
+$('#cons').click(function(){
+//alert("entre");
+var id = $("#nid").val();
+  $.post('http://altoslanches.com.br/webservice/consulta.php',{id: id}, function(resposta){
+				     //alert(resposta); 
+					 if(resposta == ""){
+						 alert("Não foi possível recuperar pedido!");
+					 }
+					else{
+						 var resp = JSON.parse(resposta);
+						 var li = "";
+						 $.each(resp, function(t, values){
+						 //alert(value.tipo);
+						 li += '<h2>Pedido: '+values.id + 
+							   '<p>Status: '+values.status+'</p>';
+						});
+						$("#result").html(li); 
+						$("#result").addClass('vermelho');
+					 }
+				  });
+});
+
+$('.sair').click(function(){
+   navigator.app.exitApp();
+});
+
+$(document).on('click','#prin',function(){
+     window.location.href = "categorias.html";
+});
+
+
+$('#sobre').click(function(){
+     window.location.href = "info.html";
+});
+
+$('#consultar').click(function(){
+     //$('#valped1').val($('#inp-info1').val());
+     $.mobile.changePage("#info-ped");
+});
+
+$('#clicar').click(function(){
+     $('#inp-info1').val($('#valped1').val());
+     $.mobile.changePage("#info-page");
+});
+
+ $(document).ready(function(){
+                $("#numero").blur(function(){
+                $("#rua").val("...");
+                $("#bairro").val("...");
+				$("#res").html("Procurando seu endereço...");
+				$("#cidade").val("...");
+                $("#uf").val("...");
+        
+				consulta = $("#cep").val();
+                $.post('http://altoslanches.com.br/webservice/pega_taxa.php',{cep:consulta},function(data){
+							// resto do código
+							//alert('entrou');
+							$("#res").html('Valor da taxa: <b>'+data);
+							$("#tax").val(data);
+						});
+                $.getJSON("http://viacep.com.br/ws/"+consulta+"/json/?callback=?", function(dados){
+                        
+                       
+						//alert(dados.logradouro);
+
+                        $("#rua").val(dados.logradouro);
+                        $("#bairro").val(dados.bairro);
+                        $("#cidade").val(dados.localidade);
+                        $("#uf").val(dados.uf);
+                        
+                        });
+						
+                });
+        });
+		
+
+var info="";
+var cat = JSON.parse(sessionStorage.getItem('cat'));
+$('#categ').val(cat);
+var form = $('#first-page').serialize();
+$.ajax({
+        type: "POST",
+        url: "http://altoslanches.com.br/webservice/produtos.php",
+        timeout: 8000,
+		crossDomain: true,
+		data: form,
+        //contentType: "application/json; charset=utf-8",
+        dataType: 'JSON',
+		error: function (request, status, erro) {
+            alert("Problema ocorrido: " + status + "\nDescrição: " + erro);
+            //Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
+            alert("Informações da requisição: \n" + request.getAllResponseHeaders());
+        },
+        success: function (result) {
+           //alert(result);
+            // Interpretando retorno JSON...
+            info = (result);
+			$(document).ready(function(){
+				listaItens(info);
+			});
+			
+		}
+});
+
+
+function listaItens(objeto){    
+   var li = "";
+   var cont = 0;
+   $.each(objeto, function (i, name) {
+        //add the <li> to "li" variable
+        //note the use of += in the variable
+        //meaning I'm adding to the existing data. not replacing it.
+        //store index value in array as id of the <a> tag
+	
+		if(name.entrega == 0){
+			if(cont == 0){
+				alert("Desculpe, estamos fechados, confira nosso cardápio e faça seu pedido mais tarde. ;)");
+			}
+			if(name.cat.indexOf('Pizza') != -1){
+			if(name.promo == 1){
+				var promocao = "- Promo."
+			}
+			else{
+				promocao = "";
+			}
+			li += '<li>'+ 
+			'<img src="http://altoslanches.com.br/css/produtos/'+name.img+'" width="100%" height="100%" class="ui-li-thumb"><h2 class="controler">'+name.nome+' '+ promocao +'</h1>'+
+			'<p id="texto">'+name.desc+'</p>'+
+			'<p>R$'+name.valorb+'B R$'+name.valorp+'P R$'+name.valorm+'M R$'+name.valorg+'G</p>'+
+			'</li>';
+			}
+			else{
+				li += '<li>' + 
+				'<img src="http://altoslanches.com.br/css/produtos/'+name.img+'" width="100%" height="100%" class="ui-li-thumb"><h2 class="controler">'+name.nome + '</h1>'+
+				'<p id="texto">'+name.desc+'</p>'+
+				'<p>R$'+name.valorp+'</p>'+
+				'</li>';
+			}
+		}
+		else{
+			if(name.cat.indexOf('Pizza') != -1){
+			if(name.promo == 1){
+				var promocao = "- Promo."
+			}
+			else{
+				promocao = "";
+			}
+			li += '<li><a href="#" id="' + i + '" class="info-go">' + 
+			'<img src="http://altoslanches.com.br/css/produtos/'+name.img+'" width="100%" height="100%" class="ui-li-thumb"><h2 class="controler">'+name.nome+' '+ promocao +'</h1>'+
+			'<p id="texto">'+name.desc+'</p>'+
+			'<p>R$'+name.valorb+'B R$'+name.valorp+'P R$'+name.valorm+'M R$'+name.valorg+'G</p>'+
+			'</a></li>';
+			}
+			else{
+				li += '<li><a href="#" id="' + i + '" class="info-go">' + 
+				'<img src="http://altoslanches.com.br/css/produtos/'+name.img+'" width="100%" height="100%" class="ui-li-thumb"><h2 class="controler">'+name.nome + '</h1>'+
+				'<p id="texto">'+name.desc+'</p>'+
+				'<p>R$'+name.valorp+'</p>'+
+				'</a></li>';
+			}
+		}
+        cont = cont + 1;
+    });
+	
+    /*for(var ind in objeto){
+       li += '<li><a class="info-go" href="#" id="'+objeto[ind]['id']+'">'+
+              '<img src="'+objeto[ind]['img']+'" class="ui-li-thumb">'+
+              '<h2>'+objeto[ind]['id']+' - '+objeto[ind]['nome']+'</h2>'+
+              '<p>Descrição: '+objeto[ind]['desc']+'</p>'+
+              '<p>Valor: '+objeto[ind]['valor']+'</p>'+
+              '</a></li>';
+    }*/
+	$('#prof-list').append(li).promise().done(function () {
+			//wait for append to finish - thats why you use a promise()
+			//done() will run after append is done
+			//add the click event for the redirection to happen to #details-page
+			$(this).on("click", ".info-go", function (e) {
+				e.preventDefault();
+				var valor = $('#inp-info').val();
+				//store the information in the next page's data
+				$("#ped-page").data("info", info[this.id]);
+				//$('#infor2').html("pedido N.: "+$('#inp-info').val());
+				$('#inp-info1').val(valor);
+				//change the page # to second page. 
+				//Now the URL in the address bar will read index.html#details-page
+				//where #details-page is the "id" of the second page
+				//we're gonna redirect to that now using changePage() method
+				$.mobile.changePage("#ped-page");
+			});
+
+			//refresh list to enhance its styling.
+			$(this).listview("refresh");
+		});
+	//use pagebeforeshow
+	//DONT USE PAGEINIT! 
+	//the reason is you want this to happen every single time
+	//pageinit will happen only once
+	$(document).on("pagebeforeshow", "#ped-page", function () {
+		//get from data - you put this here when the "a" wa clicked in the previous page
+		var info = $(this).data("info");
+		//alert(info[nome]);
+		//string to put HTML in
+		var info_view = '<option value="">Metade</option>';
+		$('#select-metade').html(info_view);
+		//use for..in to iterate through object
+		for (var key in info) {
+			//Im using grid layout here.
+			//use any kind of layout you want.
+			//key is the key of the property in the object 
+			//if obj = {name: 'k'}
+			//key = name, value = k
+				
+		}
+		for(var ind in objeto){
+			var str = objeto[ind]['cat'];
+			if(str.match(/Pizza/))
+			  info_view += '<option value="'+objeto[ind]['nome']+'">' + objeto[ind]['nome'] + '</option>';
+			
+		}
+		$('#select-metade').html(info_view);
+		//add this to html
+		var inp = '<input type="hidden" name="id-prod" id="id-prod" value="'+info['id']+'">';
+		var button = '<a href="#" class="ui-btn ui-btn-b">Finalizar Pedido</a>';
+		var control = '<form><fieldset data-role="controlgroup" data-type="horizontal"><legend>Borda</legend><input type="radio" name="radio" id="a" value="Catupiry"><label for="a">Catupiry</label><input type="radio" name="radio" id="b" value="Cheddar"><label for="b">Cheddar</label><input type="radio" name="radio" id="c" value="Chocolate"><label for="c">Chocolate</label></fieldset></form>';
+		//$(this).find("[data-role=content]").html(info['nome']);
+		if(info['promo'] == 1){
+					var promocao = '- Promo.';
+				}
+				else{
+					promocao = "";
+				}
+		$('#control').html('<b style="font-size:14px;">'+info['nome']+' '+promocao+'</b><br>'+info['desc']+'<br>');
+		$('#control').addClass('vermelho');
+		$('#nome').val(info['nome']);
+		$('#categ').val(info['cat']);
+		$('#valor').val(info['valor']);
+		//$('#control2').append(inp);
+		document.getElementById('id-prod').value = info['id'];
+		document.getElementById('tipo').value = info['tipo'];
+		if(info['cat'] == 2){
+			$('#select-borda').val("nenhum");
+			$('#select-metade').val("0");
+			$('#borda').removeClass('ui-field-contain').addClass('esconder');
+			$('#metade').removeClass('ui-field-contain').addClass('esconder');
+		}
+		if(info['cat'] == "Pizzas"){
+			$('#beb').hide();
+			$('#esconde').removeClass('esconder').addClass('ui-field-contain');
+			$('#esconde2').removeClass('esconder').addClass('ui-field-contain');
+		}
+		
+		if(info['cat'].indexOf('Promo') != -1){
+			$('#esconde').removeClass('ui-field-contain').addClass('esconder');
+			$('#esconde2').removeClass('esconder').addClass('ui-field-contain');
+			$('#beb').show();
+		}
+		if(info['cat'].indexOf('Promo') == -1 && info['cat'].indexOf('Pizza') == -1){
+			$('#esconde').removeClass('ui-field-contain').addClass('esconder');
+			$('#esconde2').removeClass('ui-field-contain').addClass('esconder');
+			$('#beb').show();
+		}
+		
+		function pega(){
+			var val = document.getElementById('opcao2').value;
+			alert(val);
+			$("#obs2").attr("placeholder", "Observação "+val+" Ex: Sem cebola, sem milho...");
+		}
+		
+			//var valor = document.getElementById('select-tam').value;
+			/*alert(valor);
+			if(info['cat'].indexOf('Promoções') != -1){
+				alert(valor);
+				$('#beb').show();
+			}else{
+				$('#beb').hide();
+			}*/
+		
+		
+	
+		
+
+	});	
+     	
+  
+}
+
+</script>

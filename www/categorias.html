@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css"> 
+	<script src="js/jquery.min.js"></script> 
+	<script src="js/jquery.mobile-1.4.5.min.js"></script>
+	<script src="phonegap.js"></script>
+    <title>Delivery</title>
+
+</head>
+<body>
+
+<div data-role="page" id="page">
+
+		<div data-role="header" data-position="fixed" id="fundo">
+			<img src="imagens/logo.png" width="100%" height="100%">
+			<a href="#outside" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext ui-btn-inline">Minus</a>
+		</div><!-- /header -->
+
+		<div role="main" class="ui-content">
+		 <form id="login">
+			<ul data-role="listview" id="cat-list" data-inset="true">
+            </ul>
+		 </form>
+		</div><!-- /content -->
+
+		<div data-role="footer" data-position="fixed">
+			<h4 class="controler">altos lanches</h4>
+		</div><!-- /footer -->
+        <div data-role="panel" id="outside">
+            <ul data-role="listview">
+                <li data-icon="back"><a href="#" data-rel="close">Fechar</a></li>
+				<li><a href="#info-ped" id="consultar">Consultar Pedido</a></li>
+				<li><a href="edt_cad.html" id="cad">editar Cadastro</a></li>
+                <li><a href="info.html" id="sobre">Contato</a></li>
+                <li><a href="#" class="sair">Sair</a></li>
+            </ul>
+        </div> 
+	</div><!-- /page -->
+	<div data-role="page" id="page2">
+	<div role="main" class="ui-content">
+		 <form id="login">
+			<div id="control"></div>
+		 </form>
+		</div><!-- /content -->
+	</div><!-- /page -->
+	<script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+</body>
+</html>
+<script>
+$(document).ready(function(){
+   $('#cad').click(function(){
+     window.location.href = "cadastro.html";
+   });
+   $('#clicar').click(function(){
+     window.location.href = "cadastro.html";
+   });
+   $('#sobre').click(function(){
+     window.location.href = "info.html";
+   });
+   
+   $('.sair').click(function(){
+     navigator.app.exitApp();
+   });
+  
+   var formula = $('#login').serialize();
+   var info = "";
+	$.ajax({
+		type: "GET",
+        url: "http://altoslanches.com.br/webservice/categorias.php",
+        timeout: 8000,
+		crossDomain: true,
+        //contentType: "application/json; charset=utf-8",
+        dataType: 'JSON',
+		error: function (request, status, erro) {
+            alert("Problema ocorrido: " + status + "\nDescição: " + erro);
+            //Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
+            alert("Informações da requisição: \n" + request.getAllResponseHeaders());
+        },
+		success: function(data){
+		        var li = "";
+				info = data;
+				$.each(info, function (i, name) {
+				  li += '<li><a href="#" id="' + i + '" class="info-go">' + 
+				  '<h2 class="controler">'+name.nome + '</h1>'+
+				  '</a></li>';
+				});
+				$("#cat-list").append(li).promise().done(function(){
+				  $(".info-go").click(function(e){
+				  e.preventDefault();
+				   //store the information in the next page's data
+					$("#page2").data("info", info[this.id]);
+					//$('#infor2').html("pedido N.: "+$('#inp-info').val());
+					//change the page # to second page. 
+					//Now the URL in the address bar will read index.html#details-page
+					//where #details-page is the "id" of the second page
+					//we're gonna redirect to that now using changePage() method
+					$.mobile.changePage("#page2");
+				  });
+				  $(this).listview("refresh");
+				});
+				$(document).on("pagebeforeshow", "#page2", function () {
+				    var info = $(this).data("info");
+					$('#control').html('<b style="font-size:14px;">'+info['nome']+'</b>');
+					
+					var dado = JSON.stringify(info['nome']);
+					sessionStorage.setItem('cat', dado );
+					//alert(dado);
+					window.location.href = "principal.html";
+				});
+			}
+			
+		
+	});
+  
+   
+});
+</script>
